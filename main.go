@@ -32,37 +32,46 @@ var (
 var cubes map[string]uint = make(map[string]uint)
 var chunks []*ChunkInfo
 
-
 func cube(color []float32) {
   gl.Materialfv(gl.FRONT, gl.AMBIENT_AND_DIFFUSE, whiteColor)
   gl.Color4f(color[0], color[1], color[2], color[3])
-  gl.Begin(gl.QUADS)
   // TOP
+  gl.Begin(gl.TRIANGLE_FAN)
   gl.Vertex3f(cubeWidth, cubeWidth, -cubeWidth)
   gl.Vertex3f(-cubeWidth, cubeWidth, -cubeWidth)
   gl.Vertex3f(-cubeWidth, cubeWidth, cubeWidth)
   gl.Vertex3f(cubeWidth, cubeWidth, cubeWidth)
+  gl.End()
   // Bottom
+  gl.Begin(gl.TRIANGLE_FAN)
   gl.Vertex3f(cubeWidth, -cubeWidth, cubeWidth)
   gl.Vertex3f(-cubeWidth, -cubeWidth, cubeWidth)
   gl.Vertex3f(-cubeWidth, -cubeWidth, -cubeWidth)
   gl.Vertex3f(cubeWidth, -cubeWidth, -cubeWidth)
+  gl.End()
   // Front
+  gl.Begin(gl.TRIANGLE_FAN)
   gl.Vertex3f(cubeWidth, cubeWidth, cubeWidth)
   gl.Vertex3f(-cubeWidth, cubeWidth, cubeWidth)
   gl.Vertex3f(-cubeWidth, -cubeWidth, cubeWidth)
   gl.Vertex3f(cubeWidth, -cubeWidth, cubeWidth)
+  gl.End()
   // Back
+  gl.Begin(gl.TRIANGLE_FAN)
   gl.Vertex3f(cubeWidth, -cubeWidth, -cubeWidth)
   gl.Vertex3f(-cubeWidth, -cubeWidth, -cubeWidth)
   gl.Vertex3f(-cubeWidth, cubeWidth, -cubeWidth)
   gl.Vertex3f(cubeWidth, cubeWidth, -cubeWidth)
+  gl.End()
   // Left
+  gl.Begin(gl.TRIANGLE_FAN)
   gl.Vertex3f(-cubeWidth, cubeWidth, cubeWidth)
   gl.Vertex3f(-cubeWidth, cubeWidth, -cubeWidth)
   gl.Vertex3f(-cubeWidth, -cubeWidth, -cubeWidth)
   gl.Vertex3f(-cubeWidth, -cubeWidth, cubeWidth)
+  gl.End()
   // Right
+  gl.Begin(gl.TRIANGLE_FAN)
   gl.Vertex3f(cubeWidth, cubeWidth, -cubeWidth)
   gl.Vertex3f(cubeWidth, cubeWidth, cubeWidth)
   gl.Vertex3f(cubeWidth, -cubeWidth, cubeWidth)
@@ -228,21 +237,19 @@ func init_() {
   gl.ShadeModel(gl.SMOOTH)
   gl.ClearColor(0.2, 0.2, 0.6, 0.0)
   gl.ClearDepth(1.0)
+
   gl.Enable(gl.DEPTH_TEST)
   gl.DepthFunc(gl.LEQUAL)
+  gl.Enable(gl.COLOR_MATERIAL)
+  gl.Enable(gl.CULL_FACE)
   gl.Hint(gl.PERSPECTIVE_CORRECTION_HINT, gl.NICEST)
+  gl.Hint(gl.LINE_SMOOTH_HINT, gl.NICEST)
 
   gl.Lightfv(gl.LIGHT0, gl.AMBIENT, lightAmbient)
   gl.Lightfv(gl.LIGHT0, gl.DIFFUSE, lightDiffuse)
   gl.Lightfv(gl.LIGHT0, gl.POSITION, lightPosition)
   gl.Enable(gl.LIGHT0)
-
-  gl.Hint(gl.LINE_SMOOTH_HINT, gl.NICEST)
-
   gl.Enable(gl.LIGHTING)
-  gl.Enable(gl.COLOR_MATERIAL)
-  //gl.Enable(gl.BLEND)
-  //gl.BlendFunc(gl.SRC_ALPHA, gl.ONE)
 
   for name, color := range colors {
     /* make a cube */
